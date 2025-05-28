@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// React example
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [result, setResult] = useState(null);
+  const [headsCount, setHeadsCount] = useState(0);
+  const [tailsCount, setTailsCount] = useState(0);
+  const [flipping, setFlipping] = useState(false);
+
+  const flipCoin = () => {
+    setFlipping(true);
+    setTimeout(() => {
+      const isHeads = Math.random() < 0.5;
+      setResult(isHeads ? "Heads" : "Tails");
+      setHeadsCount(c => isHeads ? c + 1 : c);
+      setTailsCount(c => !isHeads ? c + 1 : c);
+      setFlipping(false);
+    }, 1000); // 1s flip animation
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <h1>🪙 Coin Flipper</h1>
+      <div className={`coin ${flipping ? "flip" : ""}`}>
+        {result && <p>{result}</p>}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <button onClick={flipCoin} disabled={flipping}>Flip Coin</button>
+      <p>Heads: {headsCount}</p>
+      <p>Tails: {tailsCount}</p>
+    </div>
+  );
 }
 
-export default App
+export default App;

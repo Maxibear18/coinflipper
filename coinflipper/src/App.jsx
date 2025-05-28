@@ -20,6 +20,7 @@ function App() {
   };
 
   return (
+  <div className="app-container">
     <div className="app">
       <h1>🪙 Coin Flipper</h1>
       <div className={`coin ${flipping ? "flip" : ""}`}>
@@ -29,7 +30,9 @@ function App() {
       <p>Heads: {headsCount}</p>
       <p>Tails: {tailsCount}</p>
     </div>
-  );
+    <div className="version-label">v1.0</div>
+  </div>
+);
 }
 
 export default App;

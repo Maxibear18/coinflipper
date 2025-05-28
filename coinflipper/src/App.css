@@ -1,9 +1,27 @@
-.app {
-  text-align: center;
-  padding: 2rem;
-  font-family: sans-serif;
+/* Full-screen flex container */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #1e1e1e;
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
+/* App box centered inside */
+.app {
+  text-align: center;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Coin visual */
 .coin {
   font-size: 2rem;
   height: 100px;
@@ -13,6 +31,16 @@
   transition: transform 1s;
 }
 
+/* Flip animation */
 .flip {
   transform: rotateY(720deg);
+}
+
+/* Version number bottom-right */
+.version-label {
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+  font-size: 0.9rem;
+  color: #aaa;
 }

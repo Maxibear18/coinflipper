@@ -1,4 +1,4 @@
-/* Full-screen flex container */
+/* Full-screen layout and centering */
 .app-container {
   display: flex;
   justify-content: center;
@@ -11,7 +11,7 @@
   overflow: hidden;
 }
 
-/* App box centered inside */
+/* Centered app box */
 .app {
   text-align: center;
   font-family: sans-serif;
@@ -21,22 +21,48 @@
   gap: 1rem;
 }
 
-/* Coin visual */
-.coin {
-  font-size: 2rem;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 1s;
+/* Coin container with perspective */
+.coin-container {
+  width: 120px;
+  height: 120px;
+  perspective: 1000px;
+  margin-bottom: 10px;
 }
 
-/* Flip animation */
-.flip {
-  transform: rotateY(720deg);
+/* Coin image styling */
+.coin-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: none;
 }
 
-/* Version number bottom-right */
+/* Apply animation when flipping */
+.flipping .coin-img {
+  animation: flipUp 0.8s ease-in-out forwards;
+}
+
+/* Coin flip animation keyframes */
+@keyframes flipUp {
+  0% {
+    transform: translateY(0) rotateX(0);
+  }
+  50% {
+    transform: translateY(-150px) rotateX(720deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(1440deg);
+  }
+}
+
+/* Text result after flip */
+.result-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Version label at bottom right */
 .version-label {
   position: fixed;
   bottom: 10px;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -6,32 +6,47 @@ function App() {
   const [headsCount, setHeadsCount] = useState(0);
   const [tailsCount, setTailsCount] = useState(0);
   const [flipping, setFlipping] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   const flipCoin = () => {
     setFlipping(true);
+    setShowResult(false);
+
     setTimeout(() => {
       const isHeads = Math.random() < 0.5;
-      setResult(isHeads ? "Heads" : "Tails");
+      const outcome = isHeads ? "Heads" : "Tails";
+      setResult(outcome);
       setHeadsCount(c => isHeads ? c + 1 : c);
       setTailsCount(c => !isHeads ? c + 1 : c);
-      setFlipping(false);
-    }, 1000); 
+
+      setTimeout(() => {
+        setFlipping(false);
+        setShowResult(true);
+      }, 800);
+    }, 100);
   };
 
   return (
-  <div className="app-container">
-    <div className="app">
-      <h1>🪙 Coin Flipper</h1>
-      <div className={`coin ${flipping ? "flip" : ""}`}>
-        {result && <p>{result}</p>}
+    <div className="app-container">
+      <div className="app">
+        <h1>🪙 Coin Flipper</h1>
+        <div className={`coin-container ${flipping ? "flipping" : ""}`}>
+          {result && (
+            <img
+              src={result === "Heads" ? "/images/heads.png" : "/images/tails.png"}
+              alt={result}
+              className="coin-img"
+            />
+          )}
+        </div>
+        {showResult && <p className="result-text">{result}</p>}
+        <button onClick={flipCoin} disabled={flipping}>Flip Coin</button>
+        <p>Heads: {headsCount}</p>
+        <p>Tails: {tailsCount}</p>
       </div>
-      <button onClick={flipCoin} disabled={flipping}>Flip Coin</button>
-      <p>Heads: {headsCount}</p>
-      <p>Tails: {tailsCount}</p>
+      <div className="version-label">v1.0</div>
     </div>
-    <div className="version-label">v1.0</div>
-  </div>
-);
+  );
 }
 
 export default App;

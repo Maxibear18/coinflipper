@@ -1,4 +1,3 @@
-// React example
 import { useState } from "react";
 import "./App.css";
 
@@ -16,7 +15,7 @@ function App() {
       setHeadsCount(c => isHeads ? c + 1 : c);
       setTailsCount(c => !isHeads ? c + 1 : c);
       setFlipping(false);
-    }, 1000); // 1s flip animation
+    }, 1000); 
   };
 
   return (

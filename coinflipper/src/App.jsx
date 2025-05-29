@@ -27,7 +27,7 @@ function App() {
           transform: translateY(0) rotateX(${finalRotation % 360}deg);
         }
         50% {
-          transform: translateY(-100px) rotateX(${finalRotation + totalRotation / 2}deg);
+          transform: translateY(-180px) rotateX(${finalRotation + totalRotation / 2}deg);
         }
         100% {
           transform: translateY(0) rotateX(${finalRotation + totalRotation}deg);

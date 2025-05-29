@@ -6,70 +6,73 @@ function App() {
   const [headsCount, setHeadsCount] = useState(0);
   const [tailsCount, setTailsCount] = useState(0);
   const [flipping, setFlipping] = useState(false);
-  const [animationName, setAnimationName] = useState("");
-  const [showResult, setShowResult] = useState(false);
+  const [finalRotation, setFinalRotation] = useState(0);
 
   const flipCoin = () => {
-  const isHeads = Math.random() < 0.5;
-  const outcome = isHeads ? "Heads" : "Tails";
-  const baseRotation = 1440;
-  const offset = isHeads ? 0 : 180;
-  const totalRotation = baseRotation + offset;
+    const isHeads = Math.random() < 0.5;
+    const outcome = isHeads ? "Heads" : "Tails";
+    const baseRotation = 1440;
+    const offset = isHeads ? 0 : 180;
+    const totalRotation = baseRotation + offset;
 
-  const newAnim = `flip-${totalRotation}`;
-  setAnimationName(newAnim);
-  setFlipping(true);
-  setShowResult(false);
-  setResult(null);
+    const animationName = `flip-${Date.now()}`; 
 
-  const styleSheet = document.styleSheets[0];
-  const rule = `
-    @keyframes ${newAnim} {
-      0% {
-        transform: translateY(0px) rotateX(0deg);
+    setFlipping(true);
+    setResult(null);
+
+    const styleSheet = document.styleSheets[0];
+    const rule = `
+      @keyframes ${animationName} {
+        0% {
+          transform: translateY(0) rotateX(${finalRotation % 360}deg);
+        }
+        50% {
+          transform: translateY(-100px) rotateX(${finalRotation + totalRotation / 2}deg);
+        }
+        100% {
+          transform: translateY(0) rotateX(${finalRotation + totalRotation}deg);
+        }
       }
-      50% {
-        transform: translateY(-150px) rotateX(${totalRotation / 2}deg);
+    `;
+
+    
+    Array.from(styleSheet.cssRules).forEach((r, i) => {
+      if (r.name && r.name.startsWith("flip-")) {
+        styleSheet.deleteRule(i);
       }
-      100% {
-        transform: translateY(0px) rotateX(${totalRotation}deg);
-      }
-    }
-  `;
+    });
+    styleSheet.insertRule(rule, styleSheet.cssRules.length);
 
-  // Clean up old animations
-  Array.from(styleSheet.cssRules).forEach((r, i) => {
-    if (r.name && r.name.startsWith("flip-")) {
-      styleSheet.deleteRule(i);
-    }
-  });
+    const coinEl = document.querySelector(".coin3d");
+    coinEl.style.animation = `${animationName} 1.6s ease-in-out forwards`;
 
-  styleSheet.insertRule(rule, styleSheet.cssRules.length);
-
-  setTimeout(() => {
-    setResult(outcome);
-    setHeadsCount(c => isHeads ? c + 1 : c);
-    setTailsCount(c => !isHeads ? c + 1 : c);
     setTimeout(() => {
-      setFlipping(false);
-      setShowResult(true);
-    }, 1600);
-  }, 100);
-};
+      setResult(outcome);
+      setHeadsCount(c => isHeads ? c + 1 : c);
+      setTailsCount(c => !isHeads ? c + 1 : c);
 
+      setFinalRotation(prev => prev + totalRotation);
+      coinEl.style.animation = ""; 
+      coinEl.style.transform = `rotateX(${finalRotation + totalRotation}deg)`;
+
+      setFlipping(false);
+    }, 1600);
+  };
 
   return (
     <div className="app-container">
       <div className="header-bar">
-        <h1 className="fixed-title"> Coin Flipper</h1>
+        <h1 className="fixed-title">Coin Flipper</h1>
       </div>
+
       <div className="app">
-        {/* Coin */}
-        <div className={`coin-container ${!flipping ? "hidden" : ""}`}>
-          <div
-            className="coin3d"
-            style={flipping ? { animation: `${animationName} 1.6s ease-in-out forwards` } : {}}
-          >
+        {/* Tappable coin */}
+        <div
+          className="coin-container"
+          onClick={() => !flipping && flipCoin()}
+          style={{ cursor: flipping ? "default" : "pointer" }}
+        >
+          <div className="coin3d" style={{ transform: `rotateX(${finalRotation}deg)` }}>
             <div className="coin-face front">
               <img src="/images/heads.png" alt="Heads" />
             </div>
@@ -79,23 +82,17 @@ function App() {
           </div>
         </div>
 
-        {/* Result */}
-        {showResult && result && (
-          <>
-            <img
-              src={result === "Heads" ? "/images/heads.png" : "/images/tails.png"}
-              alt={result}
-              className="coin-img-final"
-            />
-            <p className="result-text">{result}</p>
-          </>
-        )}
+        {/* Show result */}
+        {result && <p className="result-text">{result}</p>}
 
-        <button onClick={flipCoin} disabled={flipping}>Flip Coin</button>
-        <p>Heads: {headsCount}</p>
-        <p>Tails: {tailsCount}</p>
+        {/* Counters */}
+        <div className="counter-row">
+          <div className="counter heads-counter">Heads: {headsCount}</div>
+          <div className="counter tails-counter">Tails: {tailsCount}</div>
+        </div>
       </div>
-      <div className="version-label">v1.1</div>
+
+      <div className="version-label">v1.2</div>
     </div>
   );
 }

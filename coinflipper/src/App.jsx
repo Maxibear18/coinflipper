@@ -9,6 +9,9 @@ function App() {
   const [finalRotation, setFinalRotation] = useState(0);
 
   const flipCoin = () => {
+    const coinSound = new Audio("/sounds/coin-flip.mp3");
+    coinSound.play();
+    
     const isHeads = Math.random() < 0.5;
     const outcome = isHeads ? "Heads" : "Tails";
     const baseRotation = 1440;

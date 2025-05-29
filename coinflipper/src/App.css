@@ -1,7 +1,25 @@
-/* Full-screen flex container */
-.app-container {
+/* Title Header Bar */
+.header-bar {
+  width: 100%;
+  background-color: black;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.fixed-title {
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+
+/* Full-screen layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   height: 100vh;
   width: 100vw;
@@ -11,32 +29,76 @@
   overflow: hidden;
 }
 
-/* App box centered inside */
+/* App body content */
 .app {
   text-align: center;
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding-top: 160px; 
 }
 
-/* Coin visual */
-.coin {
-  font-size: 2rem;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 1s;
+/* Coin container */
+.coin-container {
+  width: 120px;
+  height: 120px;
+  perspective: 1000px;
+  margin-bottom: 20px;
+  position: relative;
 }
 
-/* Flip animation */
-.flip {
-  transform: rotateY(720deg);
+.coin-container.hidden {
+  display: none;
 }
 
-/* Version number bottom-right */
+.coin3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Coin faces */
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.coin-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.front {
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* Final result coin */
+.coin-img-final {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+.result-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
 .version-label {
   position: fixed;
   bottom: 10px;

@@ -8,59 +8,62 @@ function App() {
   const [flipping, setFlipping] = useState(false);
   const [finalRotation, setFinalRotation] = useState(0);
 
-  const flipCoin = () => {
-    const coinSound = new Audio("/sounds/coin-flip.mp3");
-    coinSound.play();
-    
-    const isHeads = Math.random() < 0.5;
-    const outcome = isHeads ? "Heads" : "Tails";
-    const baseRotation = 1440;
-    const offset = isHeads ? 0 : 180;
-    const totalRotation = baseRotation + offset;
+ const flipCoin = () => {
+  const coinSound = new Audio("/sounds/coin-flip.mp3");
+  coinSound.play();
 
-    const animationName = `flip-${Date.now()}`; 
+  const baseRotation = 1440;
+  const extraRotation = Math.random() < 0.5 ? 0 : 180; // 0 = heads, 180 = tails
+  const totalRotation = baseRotation + extraRotation;
+  const newFinalRotation = finalRotation + totalRotation;
+  const animationName = `flip-${Date.now()}`;
 
-    setFlipping(true);
-    setResult(null);
+  setFlipping(true);
+  setResult(null);
 
-    const styleSheet = document.styleSheets[0];
-    const rule = `
-      @keyframes ${animationName} {
-        0% {
-          transform: translateY(0) rotateX(${finalRotation % 360}deg);
-        }
-        50% {
-          transform: translateY(-180px) rotateX(${finalRotation + totalRotation / 2}deg);
-        }
-        100% {
-          transform: translateY(0) rotateX(${finalRotation + totalRotation}deg);
-        }
+  const styleSheet = document.styleSheets[0];
+  const rule = `
+    @keyframes ${animationName} {
+      0% {
+        transform: translateY(0) rotateX(${finalRotation % 360}deg);
       }
-    `;
-
-    
-    Array.from(styleSheet.cssRules).forEach((r, i) => {
-      if (r.name && r.name.startsWith("flip-")) {
-        styleSheet.deleteRule(i);
+      50% {
+        transform: translateY(-180px) rotateX(${finalRotation + totalRotation / 2}deg);
       }
-    });
-    styleSheet.insertRule(rule, styleSheet.cssRules.length);
+      100% {
+        transform: translateY(0) rotateX(${newFinalRotation}deg);
+      }
+    }
+  `;
 
-    const coinEl = document.querySelector(".coin3d");
-    coinEl.style.animation = `${animationName} 1.6s ease-in-out forwards`;
+  Array.from(styleSheet.cssRules).forEach((r, i) => {
+    if (r.name && r.name.startsWith("flip-")) {
+      styleSheet.deleteRule(i);
+    }
+  });
+  styleSheet.insertRule(rule, styleSheet.cssRules.length);
 
-    setTimeout(() => {
-      setResult(outcome);
-      setHeadsCount(c => isHeads ? c + 1 : c);
-      setTailsCount(c => !isHeads ? c + 1 : c);
+  const coinEl = document.querySelector(".coin3d");
+  coinEl.style.animation = `${animationName} 1.6s ease-in-out forwards`;
 
-      setFinalRotation(prev => prev + totalRotation);
-      coinEl.style.animation = ""; 
-      coinEl.style.transform = `rotateX(${finalRotation + totalRotation}deg)`;
+  setTimeout(() => {
+    // Calculate final result from rotation
+    const finalDeg = newFinalRotation % 360;
+    const outcome = finalDeg % 360 === 0 ? "Heads" : "Tails";
 
-      setFlipping(false);
-    }, 1600);
-  };
+    setResult(outcome);
+    setHeadsCount(c => outcome === "Heads" ? c + 1 : c);
+    setTailsCount(c => outcome === "Tails" ? c + 1 : c);
+
+    coinEl.style.animation = "";
+    coinEl.style.transform = `rotateX(${newFinalRotation}deg)`;
+    setFinalRotation(newFinalRotation);
+
+    setFlipping(false);
+  }, 1600);
+};
+
+
 
   return (
     <div className="app-container">

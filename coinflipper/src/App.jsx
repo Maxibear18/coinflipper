@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
   const flipCoin = () => {
     setFlipping(true);
     setShowResult(false);
+    setResult(null); 
 
     setTimeout(() => {
       const isHeads = Math.random() < 0.5;
@@ -22,7 +23,7 @@ function App() {
       setTimeout(() => {
         setFlipping(false);
         setShowResult(true);
-      }, 800);
+      }, 800); 
     }, 100);
   };
 
@@ -30,21 +31,38 @@ function App() {
     <div className="app-container">
       <div className="app">
         <h1>🪙 Coin Flipper</h1>
-        <div className={`coin-container ${flipping ? "flipping" : ""}`}>
-          {result && (
+
+        {/* 3D Coin flip animation */}
+        <div className={`coin-container ${!flipping ? "hidden" : ""}`}>
+          <div className={`coin3d ${flipping ? "flipping" : ""}`}>
+            <div className="coin-face front">
+              <img src="/images/heads.png" alt="Heads" />
+            </div>
+            <div className="coin-face back">
+              <img src="/images/tails.png" alt="Tails" />
+            </div>
+          </div>
+        </div>
+
+        {/* Final result */}
+        {showResult && result && (
+          <>
             <img
               src={result === "Heads" ? "/images/heads.png" : "/images/tails.png"}
               alt={result}
-              className="coin-img"
+              className="coin-img-final"
             />
-          )}
-        </div>
-        {showResult && <p className="result-text">{result}</p>}
-        <button onClick={flipCoin} disabled={flipping}>Flip Coin</button>
+            <p className="result-text">{result}</p>
+          </>
+        )}
+
+        <button onClick={flipCoin} disabled={flipping}>
+          Flip Coin
+        </button>
         <p>Heads: {headsCount}</p>
         <p>Tails: {tailsCount}</p>
       </div>
-      <div className="version-label">v1.0</div>
+      <div className="version-label">v1.1</div>
     </div>
   );
 }

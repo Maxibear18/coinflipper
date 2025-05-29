@@ -1,4 +1,4 @@
-/* Full-screen layout and centering */
+/* Centered full-screen layout */
 .app-container {
   display: flex;
   justify-content: center;
@@ -11,7 +11,7 @@
   overflow: hidden;
 }
 
-/* Centered app box */
+/* App content box */
 .app {
   text-align: center;
   font-family: sans-serif;
@@ -21,48 +21,86 @@
   gap: 1rem;
 }
 
-/* Coin container with perspective */
+/* Coin container */
 .coin-container {
   width: 120px;
   height: 120px;
   perspective: 1000px;
   margin-bottom: 10px;
+  position: relative;
 }
 
-/* Coin image styling */
-.coin-img {
+/* Only show during flip */
+.coin-container.hidden {
+  display: none;
+}
+
+/* 3D flip coin */
+.coin3d {
   width: 100%;
   height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
+}
+
+.coin3d.flipping {
+  animation: flipUp3D 0.8s ease-in-out forwards;
+}
+
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
   border-radius: 50%;
-  animation: none;
+  overflow: hidden;
 }
 
-/* Apply animation when flipping */
-.flipping .coin-img {
-  animation: flipUp 0.8s ease-in-out forwards;
+.coin-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
-/* Coin flip animation keyframes */
-@keyframes flipUp {
+.front {
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+/* Flip animation */
+@keyframes flipUp3D {
   0% {
-    transform: translateY(0) rotateX(0);
+    transform: rotateX(0deg);
   }
   50% {
-    transform: translateY(-150px) rotateX(720deg);
+    transform: rotateX(720deg);
   }
   100% {
-    transform: translateY(0) rotateX(1440deg);
+    transform: rotateX(1440deg);
   }
 }
 
-/* Text result after flip */
-.result-text {
-  font-size: 1.5rem;
-  font-weight: bold;
+/* Final static result coin */
+.coin-img-final {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   margin-top: 10px;
 }
 
-/* Version label at bottom right */
+/* Result label */
+.result-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Version info */
 .version-label {
   position: fixed;
   bottom: 10px;

@@ -1,7 +1,25 @@
-/* Centered full-screen layout */
-.app-container {
+/* Title Header Bar */
+.header-bar {
+  width: 100%;
+  background-color: black;
+  padding: 20px 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.fixed-title {
+  font-size: 2.2rem;
+  margin: 0;
+}
+
+
+/* Full-screen layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   height: 100vh;
   width: 100vw;
@@ -11,14 +29,15 @@
   overflow: hidden;
 }
 
-/* App content box */
+/* App body content */
 .app {
   text-align: center;
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding-top: 100px; 
 }
 
 /* Coin container */
@@ -26,28 +45,22 @@
   width: 120px;
   height: 120px;
   perspective: 1000px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   position: relative;
 }
 
-/* Only show during flip */
 .coin-container.hidden {
   display: none;
 }
 
-/* 3D flip coin */
 .coin3d {
   width: 100%;
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.8s ease-in-out;
 }
 
-.coin3d.flipping {
-  animation: flipUp3D 0.8s ease-in-out forwards;
-}
-
+/* Coin faces */
 .coin-face {
   position: absolute;
   width: 100%;
@@ -72,20 +85,7 @@
   transform: rotateY(180deg);
 }
 
-/* Flip animation */
-@keyframes flipUp3D {
-  0% {
-    transform: rotateX(0deg);
-  }
-  50% {
-    transform: rotateX(720deg);
-  }
-  100% {
-    transform: rotateX(1440deg);
-  }
-}
-
-/* Final static result coin */
+/* Final result coin */
 .coin-img-final {
   width: 120px;
   height: 120px;
@@ -93,14 +93,12 @@
   margin-top: 10px;
 }
 
-/* Result label */
 .result-text {
   font-size: 1.5rem;
   font-weight: bold;
   margin-top: 5px;
 }
 
-/* Version info */
 .version-label {
   position: fixed;
   bottom: 10px;
